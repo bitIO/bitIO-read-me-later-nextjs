@@ -1,7 +1,11 @@
-import type { NextPage } from 'next';
+import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
+import { Welcome } from '../components/Welcome/Welcome';
 
-const Home: NextPage = () => {
-  return <div>Home</div>;
-};
-
-export default Home;
+export default function HomePage() {
+  return (
+    <>
+      <Welcome />
+      <ColorSchemeToggle />
+    </>
+  );
+}

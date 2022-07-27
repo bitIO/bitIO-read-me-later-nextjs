@@ -1,18 +1,19 @@
 {
-  "ignorePaths": [
-    "node_modules"
-  ],
+  "ignorePaths": ["node_modules"],
   "words": [
-    "capi",
     "commitlint",
-    "eudev",
+    "dropzone",
+    "embla",
     "fcalle",
     "imagemin",
+    "mantine",
     "markdownlint",
+    "modulz",
+    "nextjs",
+    "nprogress",
     "parens",
     "postcss",
-    "savi",
-    "stylelint",
-    "valassis"
+    "raindriop",
+    "stylelint"
   ]
 }
