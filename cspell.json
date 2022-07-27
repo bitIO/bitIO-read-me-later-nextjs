@@ -1,0 +1,18 @@
+{
+  "ignorePaths": [
+    "node_modules"
+  ],
+  "words": [
+    "capi",
+    "commitlint",
+    "eudev",
+    "fcalle",
+    "imagemin",
+    "markdownlint",
+    "parens",
+    "postcss",
+    "savi",
+    "stylelint",
+    "valassis"
+  ]
+}
