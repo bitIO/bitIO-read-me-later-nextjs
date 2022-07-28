@@ -5,6 +5,10 @@
     "dropzone",
     "embla",
     "fcalle",
+    "fcallem",
+    "francisco",
+    "calle",
+    "moreno",
     "imagemin",
     "mantine",
     "markdownlint",
@@ -12,9 +16,12 @@
     "nextjs",
     "nprogress",
     "parens",
+    "pnpm",
     "postcss",
     "raindrop",
     "stylelint",
-    "typecheck"
+    "tsbuildinfo",
+    "typecheck",
+    "vercel"
   ]
 }
