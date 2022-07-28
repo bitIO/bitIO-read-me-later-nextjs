@@ -1,7 +1,5 @@
 import { NextPage } from 'next';
 
-const Pocket: NextPage = () => {
-  return <div>Pocket</div>;
-};
+const Pocket: NextPage = () => <div>Pocket</div>;
 
 export default Pocket;

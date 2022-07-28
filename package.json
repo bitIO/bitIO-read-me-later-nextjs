@@ -10,6 +10,7 @@
     "jest:watch": "jest --watch",
     "jest": "jest",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "prettier:check": "prettier --check \"**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
     "release:dry": "semantic-release --dry-run",
@@ -28,6 +29,7 @@
     "@mantine/core": "5.0.0",
     "@mantine/dates": "5.0.0",
     "@mantine/dropzone": "5.0.0",
+    "@mantine/ds": "5.0.0",
     "@mantine/form": "5.0.0",
     "@mantine/hooks": "5.0.0",
     "@mantine/modals": "5.0.0",
@@ -43,8 +45,8 @@
     "dayjs": "1.11.4",
     "embla-carousel-react": "6.2.0",
     "next": "12.2.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react": "18.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.17.8",
