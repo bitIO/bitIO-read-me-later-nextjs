@@ -7,7 +7,7 @@ import { Header } from '../Header/Header';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { classes } = useStyles();
-  const { user, error, isLoading } = useUser();
+  const { error, isLoading } = useUser();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -15,10 +15,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   if (error) {
     return <div>{error.message}</div>;
-  }
-
-  if (!user) {
-    return null;
   }
 
   return (

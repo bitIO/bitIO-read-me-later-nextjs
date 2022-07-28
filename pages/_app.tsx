@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
 import { getCookie, setCookie } from 'cookies-next';
 import { GetServerSidePropsContext } from 'next';
@@ -32,9 +33,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
             <NotificationsProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <ModalsProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </ModalsProvider>
             </NotificationsProvider>
           </MantineProvider>
         </ColorSchemeProvider>

@@ -4,6 +4,7 @@ import { UserProfile, useUser } from '@auth0/nextjs-auth0';
 import { Avatar, Burger, Container, Group, Menu, Tabs, Text, UnstyledButton } from '@mantine/core';
 import { MantineLogo } from '@mantine/ds';
 import { useDisclosure } from '@mantine/hooks';
+import { openConfirmModal } from '@mantine/modals';
 import {
   IconChevronDown,
   IconHeart,
@@ -15,14 +16,33 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from '@tabler/icons';
+import { NextRouter, useRouter } from 'next/router';
 
 import useStyles from './Header.styles';
+
+const confirmLogout = (router: NextRouter) =>
+  openConfirmModal({
+    centered: true,
+    children: (
+      <Text size="sm">
+        This action is so important that you are required to confirm it with a modal. Please click
+        one of these buttons to proceed.
+      </Text>
+    ),
+    confirmProps: { color: 'red' },
+    labels: { cancel: 'Cancel', confirm: 'Confirm' },
+    onCancel: () => console.log('Cancel'),
+    onConfirm: () => {
+      console.log('Confirmed');
+      router.push('/api/auth/logout');
+    },
+    title: 'Are you sure?',
+  });
 
 function renderAvatar(user: UserProfile | undefined) {
   if (!user) {
     return null;
   }
-
   const altText = user.name || user.nickname || 'user avatar';
   return (
     <Group spacing={7}>
@@ -38,6 +58,7 @@ function renderAvatar(user: UserProfile | undefined) {
 export function Header() {
   const { classes, theme, cx } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
+  const router = useRouter();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const { user } = useUser();
 
@@ -87,7 +108,12 @@ export function Header() {
               <Menu.Item icon={<IconSwitchHorizontal size={14} stroke={1.5} />}>
                 Change account
               </Menu.Item>
-              <Menu.Item icon={<IconLogout size={14} stroke={1.5} />}>Logout</Menu.Item>
+              <Menu.Item
+                icon={<IconLogout size={14} stroke={1.5} />}
+                onClick={() => confirmLogout(router)}
+              >
+                Logout
+              </Menu.Item>
 
               <Menu.Divider />
 
