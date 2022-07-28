@@ -1,18 +1,20 @@
 {
-  "ignorePaths": ["node_modules"],
+  "ignorePaths": [
+    "node_modules"
+  ],
   "words": [
+    "calle",
     "commitlint",
     "dropzone",
     "embla",
     "fcalle",
     "fcallem",
     "francisco",
-    "calle",
-    "moreno",
     "imagemin",
     "mantine",
     "markdownlint",
     "modulz",
+    "moreno",
     "nextjs",
     "nprogress",
     "parens",
@@ -20,6 +22,7 @@
     "postcss",
     "raindrop",
     "stylelint",
+    "tabler",
     "tsbuildinfo",
     "typecheck",
     "vercel"
