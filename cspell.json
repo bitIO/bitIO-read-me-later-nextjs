@@ -1,7 +1,5 @@
 {
-  "ignorePaths": [
-    "node_modules"
-  ],
+  "ignorePaths": ["node_modules"],
   "words": [
     "commitlint",
     "dropzone",
@@ -15,7 +13,7 @@
     "nprogress",
     "parens",
     "postcss",
-    "raindriop",
+    "raindrop",
     "stylelint",
     "typecheck"
   ]

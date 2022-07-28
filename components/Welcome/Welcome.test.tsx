@@ -2,8 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { Welcome } from './Welcome';
 
 describe('Welcome component', () => {
-  it('has correct Next.js theming section link', () => {
+  it('has correct section links', () => {
     render(<Welcome />);
-    expect(screen.getByText('this guide')).toHaveAttribute('href', 'https://mantine.dev/theming/next/');
+    expect(screen.getByText('raindrop')).toHaveAttribute('href', 'https://raindrop.io/');
+    expect(screen.getByText('pocket')).toHaveAttribute('href', 'https://getpocket.com/');
   });
 });

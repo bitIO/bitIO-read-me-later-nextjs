@@ -7,8 +7,13 @@ export function Welcome() {
   const { classes } = useStyles();
   const { user, error, isLoading } = useUser();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
 
   if (user) {
     return (
@@ -24,8 +29,8 @@ export function Welcome() {
           <span>offering you a daily reading list, removing old stuff, import/export from </span>
           <span>
             services like{' '}
-            <Anchor href="https://raindriop.io/" size="lg">
-              raindriop
+            <Anchor href="https://raindrop.io/" size="lg">
+              raindrop
             </Anchor>{' '}
             or{' '}
             <Anchor href="https://getpocket.com/" size="lg">
