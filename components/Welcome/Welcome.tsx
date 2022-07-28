@@ -1,28 +1,18 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { Anchor, Group, Text, Title } from '@mantine/core';
-import Auth0Button from '../Auth0Button/Auth0Button';
+
 import useStyles from './Welcome.styles';
+
+import Auth0Button from '../Auth0Button/Auth0Button';
 
 export function Welcome() {
   const { classes } = useStyles();
-  const { user, error, isLoading } = useUser();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error.message}</div>;
-  }
-
-  if (!user) {
-    return null;
-  }
+  const { user } = useUser();
 
   return (
     <>
       <Title align="center" className={classes.title} mt={100}>
-        Welcome {user.name} to{' '}
+        Welcome {user?.name} to{' '}
         <Text component="span" inherit variant="gradient">
           RML
         </Text>

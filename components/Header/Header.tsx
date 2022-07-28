@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+import { UserProfile, useUser } from '@auth0/nextjs-auth0';
 import { Avatar, Burger, Container, Group, Menu, Tabs, Text, UnstyledButton } from '@mantine/core';
 import { MantineLogo } from '@mantine/ds';
 import { useDisclosure } from '@mantine/hooks';
@@ -12,18 +15,33 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from '@tabler/icons';
-import { useState } from 'react';
+
 import useStyles from './Header.styles';
 
-interface HeaderTabsProps {
-  user: { name: string; image: string };
-  tabs: string[];
+function renderAvatar(user: UserProfile | undefined) {
+  if (!user) {
+    return null;
+  }
+
+  const altText = user.name || user.nickname || 'user avatar';
+  return (
+    <Group spacing={7}>
+      <Avatar alt={altText} radius="xl" size={20} src={user.picture} />
+      <Text mr={3} size="sm" sx={{ lineHeight: 1 }} weight={500}>
+        {user.name}
+      </Text>
+      <IconChevronDown size={12} stroke={1.5} />
+    </Group>
+  );
 }
 
-export function Header({ user, tabs }: HeaderTabsProps) {
+export function Header() {
   const { classes, theme, cx } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const { user } = useUser();
+
+  const tabs = ['Home', 'Orders', 'Education', 'Community', 'Forums', 'Support', 'Account'];
 
   const items = tabs.map((tab) => (
     <Tabs.Tab key={tab} value={tab}>
@@ -50,13 +68,7 @@ export function Header({ user, tabs }: HeaderTabsProps) {
               <UnstyledButton
                 className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
               >
-                <Group spacing={7}>
-                  <Avatar alt={user.name} radius="xl" size={20} src={user.image} />
-                  <Text mr={3} size="sm" sx={{ lineHeight: 1 }} weight={500}>
-                    {user.name}
-                  </Text>
-                  <IconChevronDown size={12} stroke={1.5} />
-                </Group>
+                {renderAvatar(user)}
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>

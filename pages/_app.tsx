@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
@@ -5,7 +7,8 @@ import { getCookie, setCookie } from 'cookies-next';
 import { GetServerSidePropsContext } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useState } from 'react';
+
+import Layout from '../components/Layout/Layout';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -24,11 +27,14 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
         <link href="/favicon.svg" rel="shortcut icon" />
       </Head>
+
       <UserProvider>
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
             <NotificationsProvider>
-              <Component {...pageProps} />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
             </NotificationsProvider>
           </MantineProvider>
         </ColorSchemeProvider>
