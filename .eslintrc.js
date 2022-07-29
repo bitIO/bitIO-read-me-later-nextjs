@@ -16,6 +16,7 @@ module.exports = {
     project: './tsconfig.json',
   },
   rules: {
+    'arrow-body-style': ['error', 'always'],
     'import/order': [
       'error',
       {

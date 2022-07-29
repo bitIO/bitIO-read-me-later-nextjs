@@ -34,9 +34,11 @@ export function renderHeaderTabs() {
       }
       return 0;
     })
-    .map((tab) => (
-      <Tabs.Tab key={tab.order} value={tab.link}>
-        {tab.title}
-      </Tabs.Tab>
-    ));
+    .map((tab) => {
+      return (
+        <Tabs.Tab key={tab.order} value={tab.link}>
+          {tab.title}
+        </Tabs.Tab>
+      );
+    });
 }
