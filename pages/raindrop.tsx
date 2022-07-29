@@ -1,5 +1,5 @@
-import { NextPage } from 'next';
-
-const Raindrop: NextPage = () => <div>Raindrop</div>;
+function Raindrop() {
+  return <div>Raindrop</div>;
+}
 
 export default Raindrop;

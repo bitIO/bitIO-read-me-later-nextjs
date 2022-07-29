@@ -3,7 +3,7 @@ import { AppShell } from '@mantine/core';
 
 import useStyles from './Layout.styles';
 
-import { Header } from '../Header/Header';
+import Header from '../Header/Header';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { classes } = useStyles();

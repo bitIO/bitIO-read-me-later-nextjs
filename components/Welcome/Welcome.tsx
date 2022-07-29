@@ -5,7 +5,7 @@ import useStyles from './Welcome.styles';
 
 import Auth0Button from '../Auth0Button/Auth0Button';
 
-export function Welcome() {
+function Welcome() {
   const { classes } = useStyles();
   const { user } = useUser();
 
@@ -17,25 +17,39 @@ export function Welcome() {
           RML
         </Text>
       </Title>
-      <Text align="center" color="dimmed" mt="xl" mx="auto" size="lg" sx={{ maxWidth: 580 }}>
-        <span>This project is a WIP aimed to manage your reading list and take care of </span>
-        <span>offering you a daily reading list, removing old stuff, import/export from </span>
-        <span>
-          services like{' '}
-          <Anchor href="https://raindrop.io/" size="lg">
-            raindrop
-          </Anchor>{' '}
-          or{' '}
-          <Anchor href="https://getpocket.com/" size="lg">
-            pocket
-          </Anchor>
-        </span>
+      <Text
+        align="center"
+        color="dimmed"
+        mt="xl"
+        mx="auto"
+        size="lg"
+        sx={{
+          maxWidth: 580,
+        }}
+      >
+        This project is a WIP aimed to manage your reading list and take care of
+        offering you a daily reading list, removing old stuff, import/export
+        from services like{' '}
+        <Anchor href="https://raindrop.io/" size="lg">
+          raindrop
+        </Anchor>{' '}
+        or{' '}
+        <Anchor href="https://getpocket.com/" size="lg">
+          pocket
+        </Anchor>
       </Text>
       {!user && (
-        <Group position="center" sx={{ padding: 15 }}>
+        <Group
+          position="center"
+          sx={{
+            padding: 15,
+          }}
+        >
           <Auth0Button>Login with Auth0</Auth0Button>
         </Group>
       )}
     </>
   );
 }
+
+export default Welcome;

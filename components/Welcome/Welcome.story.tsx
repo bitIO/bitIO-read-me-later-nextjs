@@ -1,6 +1,6 @@
 import { Welcome } from './Welcome';
 
-export default {
+const DefaultState = {
   component: Welcome,
   parameters: {
     initialUser: {
@@ -10,9 +10,13 @@ export default {
   title: 'Welcome',
 };
 
-export const Loading = () => <Welcome />;
+function Loading() {
+  return <Welcome />;
+}
 
-export const Logged = () => <Welcome />;
+function Logged() {
+  return <Welcome />;
+}
 Logged.parameters = {
   initialUser: {
     isLoading: false,
@@ -28,10 +32,15 @@ Logged.parameters = {
   },
 };
 
-export const NotLogged = () => <Welcome />;
+function NotLogged() {
+  return <Welcome />;
+}
 NotLogged.parameters = {
   initialUser: {
     error: 'Something went wrong',
     isLoading: false,
   },
 };
+
+export { Loading, Logged, NotLogged };
+export default DefaultState;

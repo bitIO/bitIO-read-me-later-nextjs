@@ -8,7 +8,11 @@ interface ComponentPreviewProps {
   withSpacing?: boolean;
 }
 
-export function ComponentPreview({ children, canvas, withSpacing = false }: ComponentPreviewProps) {
+function ComponentPreview({
+  children,
+  canvas,
+  withSpacing = false,
+}: ComponentPreviewProps) {
   return (
     <Box
       sx={{
@@ -22,3 +26,9 @@ export function ComponentPreview({ children, canvas, withSpacing = false }: Comp
     </Box>
   );
 }
+
+ComponentPreview.defaultProps = {
+  withSpacing: true,
+};
+
+export default ComponentPreview;
