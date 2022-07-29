@@ -14,6 +14,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 
 import Layout from '../components/Layout/Layout';
+import '../styles/globals.css';
 
 function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { colorScheme, Component, pageProps } = props;
