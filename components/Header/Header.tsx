@@ -19,6 +19,7 @@ import {
 import { NextRouter, useRouter } from 'next/router';
 
 import useStyles from './Header.styles';
+import { renderHeaderTabs } from './headerTabs';
 
 const confirmLogout = (router: NextRouter) =>
   openConfirmModal({
@@ -56,19 +57,11 @@ function renderAvatar(user: UserProfile | undefined) {
 }
 
 export function Header() {
-  const { classes, theme, cx } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
   const router = useRouter();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const { classes, theme, cx } = useStyles();
   const { user } = useUser();
-
-  const tabs = ['Home', 'Orders', 'Education', 'Community', 'Forums', 'Support', 'Account'];
-
-  const items = tabs.map((tab) => (
-    <Tabs.Tab key={tab} value={tab}>
-      {tab}
-    </Tabs.Tab>
-  ));
 
   return (
     <div className={classes.header}>
@@ -135,10 +128,14 @@ export function Header() {
             tab: classes.tab,
             tabsList: classes.tabsList,
           }}
-          defaultValue="Home"
+          defaultValue="/raindrop"
+          onTabChange={(value) => {
+            router.push(`${value}`);
+          }}
+          value={router.pathname}
           variant="outline"
         >
-          <Tabs.List>{items}</Tabs.List>
+          <Tabs.List>{renderHeaderTabs()}</Tabs.List>
         </Tabs>
       </Container>
     </div>
