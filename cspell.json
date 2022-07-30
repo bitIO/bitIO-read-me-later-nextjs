@@ -1,7 +1,5 @@
 {
-  "ignorePaths": [
-    "node_modules"
-  ],
+  "ignorePaths": ["node_modules"],
   "words": [
     "calle",
     "camelcase",
@@ -20,6 +18,7 @@
     "multilines",
     "nextjs",
     "nprogress",
+    "oatuh",
     "parens",
     "pnpm",
     "postcss",
