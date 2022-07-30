@@ -5,9 +5,10 @@ module.exports = {
     'plugin:@next/next/recommended',
     'plugin:jest/recommended',
     'plugin:storybook/recommended',
+    'plugin:typescript-sort-keys/recommended',
     'prettier',
   ],
-  plugins: ['sort-keys-fix', 'testing-library', 'jest'],
+  plugins: ['sort-keys-fix', 'typescript-sort-keys', 'testing-library', 'jest'],
   overrides: [
     {
       files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
@@ -142,4 +143,5 @@ module.exports = {
     ],
     'sort-keys-fix/sort-keys-fix': 'warn',
   },
+  parser: '@typescript-eslint/parser',
 };
