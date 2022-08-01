@@ -24,6 +24,7 @@
     "postcss",
     "raindrop",
     "stylelint",
+    "swr",
     "tabler",
     "tsbuildinfo",
     "typecheck",
