@@ -1,24 +1,31 @@
-import React, { useMemo } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useReducer,
+} from 'react';
 
-type Action =
+type RaindropAction =
   | { type: 'authSave' }
   | { type: 'authRemove' }
   | { type: 'authRefresh' };
-type Dispatch = (action: Action) => void;
-type State = {
+type RaindropDispatch = (action: RaindropAction, payload?: string) => void;
+type RaindropState = {
   access_token: string | undefined;
   expires: number | undefined;
   expires_in: number | undefined;
   refresh_token: string | undefined;
   token_type: 'Bearer';
 };
-type RaindropProviderProps = { children: React.ReactNode };
+type RaindropProviderProps = { children: ReactNode };
 
-const RaindropContext = React.createContext<
-  { raindropDispatch: Dispatch; raindropState: State } | undefined
+const RaindropContext = createContext<
+  | { raindropDispatch: RaindropDispatch; raindropState: RaindropState }
+  | undefined
 >(undefined);
 
-function raindropReducer(state: State, action: Action) {
+function raindropReducer(state: RaindropState, action: RaindropAction) {
   switch (action.type) {
     case 'authRefresh': {
       return {
@@ -36,20 +43,20 @@ function raindropReducer(state: State, action: Action) {
       };
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      throw new Error(`Unhandled action: ${JSON.stringify(action)}`);
     }
   }
 }
 
 function RaindropProvider({ children }: RaindropProviderProps) {
-  const initialState: State = {
+  const initialState: RaindropState = {
     access_token: undefined,
     expires: undefined,
     expires_in: undefined,
     refresh_token: undefined,
     token_type: 'Bearer',
   };
-  const [raindropState, raindropDispatch] = React.useReducer(
+  const [raindropState, raindropDispatch] = useReducer(
     raindropReducer,
     initialState,
   );
@@ -67,7 +74,7 @@ function RaindropProvider({ children }: RaindropProviderProps) {
 }
 
 function useRaindrop() {
-  const context = React.useContext(RaindropContext);
+  const context = useContext(RaindropContext);
   if (context === undefined) {
     throw new Error('useCount must be used within a CountProvider');
   }
