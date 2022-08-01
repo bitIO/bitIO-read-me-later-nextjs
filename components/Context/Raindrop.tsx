@@ -16,7 +16,7 @@ type RaindropState = {
   expires: number | undefined;
   expires_in: number | undefined;
   refresh_token: string | undefined;
-  token_type: 'Bearer';
+  token_type: string | undefined;
 };
 type RaindropProviderProps = { children: ReactNode };
 
