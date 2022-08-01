@@ -7,10 +7,10 @@ import {
 } from 'react';
 
 type RaindropAction =
-  | { type: 'authSave' }
+  | { payload: RaindropState; type: 'authSave' }
   | { type: 'authRemove' }
   | { type: 'authRefresh' };
-type RaindropDispatch = (action: RaindropAction, payload?: string) => void;
+type RaindropDispatch = (action: RaindropAction) => void;
 type RaindropState = {
   access_token: string | undefined;
   expires: number | undefined;
