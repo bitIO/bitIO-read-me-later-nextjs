@@ -11,21 +11,39 @@ type RaindropAction =
   | { type: 'authRemove' }
   | { type: 'authRefresh' };
 type RaindropDispatch = (action: RaindropAction) => void;
-type RaindropState = {
+type RaindropConfiguration = {
+  collections: string[];
+  collectionsIncludeAll: boolean;
+  initialized: boolean;
+  tags: string[];
+};
+type RaindropSession = {
   access_token: string | undefined;
   expires: number | undefined;
   expires_in: number | undefined;
   refresh_token: string | undefined;
   token_type: string | undefined;
 };
+type RaindropState = {
+  configuration: RaindropConfiguration;
+  session: RaindropSession;
+};
 type RaindropProviderProps = { children: ReactNode };
 
 const initialState: RaindropState = {
-  access_token: undefined,
-  expires: undefined,
-  expires_in: undefined,
-  refresh_token: undefined,
-  token_type: 'Bearer',
+  configuration: {
+    collections: [],
+    collectionsIncludeAll: false,
+    initialized: false,
+    tags: [],
+  },
+  session: {
+    access_token: undefined,
+    expires: undefined,
+    expires_in: undefined,
+    refresh_token: undefined,
+    token_type: 'Bearer',
+  },
 };
 
 const RaindropContext = createContext<
