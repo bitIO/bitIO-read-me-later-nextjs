@@ -67,7 +67,7 @@ function RaindropProvider({ children }: RaindropProviderProps) {
       raindropDispatch,
       raindropState,
     };
-  }, []);
+  }, [raindropState]);
   return (
     <RaindropContext.Provider value={value}>
       {children}
