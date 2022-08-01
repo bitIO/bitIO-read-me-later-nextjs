@@ -1,6 +1,9 @@
 {
-  "ignorePaths": ["node_modules"],
+  "ignorePaths": [
+    "node_modules"
+  ],
   "words": [
+    "Autosize",
     "calle",
     "camelcase",
     "commitlint",
@@ -9,6 +12,7 @@
     "fcalle",
     "fcallem",
     "francisco",
+    "Greycliff",
     "imagemin",
     "linebreak",
     "mantine",
