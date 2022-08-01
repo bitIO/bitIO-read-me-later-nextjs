@@ -201,7 +201,7 @@ function Header() {
           value={router.pathname}
           variant="outline"
         >
-          <Tabs.List>{renderHeaderTabs()}</Tabs.List>
+          <Tabs.List>{renderHeaderTabs(user)}</Tabs.List>
         </Tabs>
       </Container>
     </div>
