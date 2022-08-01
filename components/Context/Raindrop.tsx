@@ -20,6 +20,14 @@ type RaindropState = {
 };
 type RaindropProviderProps = { children: ReactNode };
 
+const initialState: RaindropState = {
+  access_token: undefined,
+  expires: undefined,
+  expires_in: undefined,
+  refresh_token: undefined,
+  token_type: 'Bearer',
+};
+
 const RaindropContext = createContext<
   | { raindropDispatch: RaindropDispatch; raindropState: RaindropState }
   | undefined
@@ -40,6 +48,7 @@ function raindropReducer(state: RaindropState, action: RaindropAction) {
     case 'authSave': {
       return {
         ...state,
+        ...action.payload,
       };
     }
     default: {
@@ -49,13 +58,6 @@ function raindropReducer(state: RaindropState, action: RaindropAction) {
 }
 
 function RaindropProvider({ children }: RaindropProviderProps) {
-  const initialState: RaindropState = {
-    access_token: undefined,
-    expires: undefined,
-    expires_in: undefined,
-    refresh_token: undefined,
-    token_type: 'Bearer',
-  };
   const [raindropState, raindropDispatch] = useReducer(
     raindropReducer,
     initialState,
