@@ -13,6 +13,7 @@ import { GetServerSidePropsContext } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
+import { RaindropProvider } from '../components/Context/Raindrop';
 import Layout from '../components/Layout/Layout';
 import '../styles/globals.css';
 
@@ -55,9 +56,11 @@ function App(props: AppProps & { colorScheme: ColorScheme }) {
           >
             <NotificationsProvider>
               <ModalsProvider>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+                <RaindropProvider>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </RaindropProvider>
               </ModalsProvider>
             </NotificationsProvider>
           </MantineProvider>
