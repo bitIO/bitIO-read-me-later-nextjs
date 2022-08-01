@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
+import { stringify } from 'query-string';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('>> /raindrop/callback');
-
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
@@ -28,7 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     },
   );
   const json = await response.json();
-  res.status(200).json(json);
+  res.redirect(`/raindrop/callback?${stringify(json)}`);
 }
 
 export default handler;
