@@ -12,6 +12,7 @@ import { getCookie, setCookie } from 'cookies-next';
 import { GetServerSidePropsContext } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { CookiesProvider } from 'react-cookie';
 
 import { RaindropProvider } from '../components/Context/Raindrop';
 import Layout from '../components/Layout/Layout';
@@ -41,31 +42,32 @@ function App(props: AppProps & { colorScheme: ColorScheme }) {
         />
         <link href="/favicon.svg" rel="shortcut icon" />
       </Head>
-
-      <UserProvider>
-        <ColorSchemeProvider
-          colorScheme={currentColorScheme}
-          toggleColorScheme={toggleColorScheme}
-        >
-          <MantineProvider
-            theme={{
-              colorScheme,
-            }}
-            withGlobalStyles
-            withNormalizeCSS
+      <CookiesProvider>
+        <UserProvider>
+          <ColorSchemeProvider
+            colorScheme={currentColorScheme}
+            toggleColorScheme={toggleColorScheme}
           >
-            <NotificationsProvider>
-              <ModalsProvider>
-                <RaindropProvider>
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                </RaindropProvider>
-              </ModalsProvider>
-            </NotificationsProvider>
-          </MantineProvider>
-        </ColorSchemeProvider>
-      </UserProvider>
+            <MantineProvider
+              theme={{
+                colorScheme,
+              }}
+              withGlobalStyles
+              withNormalizeCSS
+            >
+              <NotificationsProvider>
+                <ModalsProvider>
+                  <RaindropProvider>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </RaindropProvider>
+                </ModalsProvider>
+              </NotificationsProvider>
+            </MantineProvider>
+          </ColorSchemeProvider>
+        </UserProvider>
+      </CookiesProvider>
     </>
   );
 }
