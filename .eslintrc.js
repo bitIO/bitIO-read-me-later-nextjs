@@ -6,6 +6,7 @@ module.exports = {
     'plugin:jest/recommended',
     'plugin:storybook/recommended',
     'plugin:typescript-sort-keys/recommended',
+    'plugin:react-hooks/recommended',
     'prettier',
   ],
   plugins: ['sort-keys-fix', 'typescript-sort-keys', 'testing-library', 'jest'],
