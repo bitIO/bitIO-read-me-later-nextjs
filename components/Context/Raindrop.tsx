@@ -1,34 +1,13 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useMemo,
-  useReducer,
-} from 'react';
+import { createContext, useContext, useMemo, useReducer } from 'react';
 
-type RaindropAction =
-  | { payload: RaindropState; type: 'authSave' }
-  | { type: 'authRemove' }
-  | { type: 'authRefresh' };
-type RaindropDispatch = (action: RaindropAction) => void;
-type RaindropConfiguration = {
-  collections: string[];
-  collectionsIncludeAll: boolean;
-  initialized: boolean;
-  tags: string[];
-};
-type RaindropSession = {
-  access_token: string | undefined;
-  expires: number | undefined;
-  expires_in: number | undefined;
-  refresh_token: string | undefined;
-  token_type: string | undefined;
-};
-type RaindropState = {
-  configuration: RaindropConfiguration;
-  session: RaindropSession;
-};
-type RaindropProviderProps = { children: ReactNode };
+import { useCookies } from 'react-cookie';
+
+import {
+  RaindropAction,
+  RaindropDispatch,
+  RaindropProviderProps,
+  RaindropState,
+} from '../../types/raindrop';
 
 const initialState: RaindropState = {
   configuration: {
@@ -42,8 +21,9 @@ const initialState: RaindropState = {
     expires: undefined,
     expires_in: undefined,
     refresh_token: undefined,
-    token_type: 'Bearer',
+    token_type: undefined,
   },
+  user: undefined,
 };
 
 const RaindropContext = createContext<
@@ -51,8 +31,20 @@ const RaindropContext = createContext<
   | undefined
 >(undefined);
 
-function raindropReducer(state: RaindropState, action: RaindropAction) {
+function raindropReducer(
+  state: RaindropState,
+  action: RaindropAction,
+): RaindropState {
   switch (action.type) {
+    case 'saveConfigCollections': {
+      return {
+        ...state,
+        configuration: {
+          ...state.configuration,
+          collections: action.payload,
+        },
+      };
+    }
     case 'authRefresh': {
       return {
         ...state,
@@ -76,10 +68,21 @@ function raindropReducer(state: RaindropState, action: RaindropAction) {
 }
 
 function RaindropProvider({ children }: RaindropProviderProps) {
+  const [cookies] = useCookies(['raindrop-access']);
+  if (cookies['raindrop-access']) {
+    initialState.session = {
+      access_token: cookies['raindrop-access'].access_token,
+      expires: cookies['raindrop-access'].expires,
+      expires_in: cookies['raindrop-access'].expires_in,
+      refresh_token: cookies['raindrop-access'].refresh_token,
+      token_type: cookies['raindrop-access'].token_type,
+    };
+  }
   const [raindropState, raindropDispatch] = useReducer(
     raindropReducer,
     initialState,
   );
+
   const value = useMemo(() => {
     return {
       raindropDispatch,
@@ -96,7 +99,7 @@ function RaindropProvider({ children }: RaindropProviderProps) {
 function useRaindrop() {
   const context = useContext(RaindropContext);
   if (context === undefined) {
-    throw new Error('useCount must be used within a CountProvider');
+    throw new Error('useRaindrop must be used within a RaindropProvider');
   }
   return context;
 }

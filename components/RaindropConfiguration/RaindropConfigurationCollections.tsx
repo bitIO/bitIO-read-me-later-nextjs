@@ -1,24 +1,171 @@
+/* eslint-disable no-underscore-dangle */
+import { useEffect, useState } from 'react';
+
 import {
-  Box,
+  Avatar,
   Checkbox,
-  ScrollArea,
-  SimpleGrid,
+  Group,
+  Paper,
   Skeleton,
   Text,
+  TransferList,
+  TransferListData,
+  TransferListItem,
+  TransferListItemComponentProps,
 } from '@mantine/core';
-import { Link1Icon } from '@modulz/radix-icons';
 
-import useRaindropCollections from './useRaindropCollections';
-
+import useRaindropCollections from '../../hooks/raindrop/useRaindropCollections';
+import { RaindropCollection } from '../../types/raindrop';
 import { useRaindrop } from '../Context/Raindrop';
-import NotFound from '../NotFound/NotFound';
+
+function buildTransferListItem(item: RaindropCollection): TransferListItem {
+  return {
+    description: item.description,
+    group: item.title,
+    image: item.cover,
+    label: item.title,
+    value: `${item._id}`,
+  };
+}
+
+function findItem(
+  collectionId: number,
+  root: RaindropCollection[],
+  children: RaindropCollection[],
+) {
+  const childNode = children.find((childItem) => {
+    return childItem._id === collectionId;
+  });
+  if (childNode) {
+    return childNode;
+  }
+  const rootNode = root.find((rootItem) => {
+    return rootItem._id === collectionId;
+  });
+  if (rootNode) {
+    return rootNode;
+  }
+  throw new Error(`Cannot find collection ${collectionId}`);
+}
+
+function findMyParent(
+  collectionId: number,
+  root: RaindropCollection[],
+  children: RaindropCollection[],
+): RaindropCollection {
+  const childNode = children.find((childItem) => {
+    return childItem._id === collectionId;
+  });
+  const rootNode = root.find((rootItem) => {
+    return rootItem._id === childNode?.parent?.$id;
+  });
+  if (rootNode) {
+    return rootNode;
+  }
+  if (childNode && childNode.parent) {
+    return findMyParent(childNode?.parent?.$id, root, children);
+  }
+  throw new Error(`Cannot find parent node for collection ${collectionId}`);
+}
+
+function buildTransferData(
+  children: RaindropCollection[],
+  root: RaindropCollection[],
+  alreadySelectedCollections: number[],
+): TransferListData {
+  if (!root || root.length === 0) {
+    return [[], []];
+  }
+
+  const leftSideItems: TransferListItem[] = root
+    .filter((rootItem) => {
+      return !alreadySelectedCollections.includes(rootItem._id);
+    })
+    .map((item): TransferListItem => {
+      return buildTransferListItem(item);
+    });
+
+  if (children && children && children.length > 0) {
+    children.forEach((item) => {
+      const parentNode = findMyParent(item._id, root || [], children || []);
+      leftSideItems.push({
+        description: item.description,
+        group: parentNode.title,
+        image: item.cover,
+        label: item.title,
+        value: `${item._id}`,
+      });
+    });
+  }
+  const rightSideItems = alreadySelectedCollections.map((collectionId) => {
+    const collection = findItem(collectionId, root, children);
+    return buildTransferListItem(collection);
+  });
+
+  return [leftSideItems, rightSideItems];
+}
+
+function TransferListItemComponent({
+  data,
+  selected,
+}: TransferListItemComponentProps) {
+  return (
+    <Group noWrap>
+      <Avatar size="lg" src={data.image} />
+      <div
+        style={{
+          flex: 1,
+        }}
+      >
+        <Text size="sm" weight={500}>
+          {data.label}
+        </Text>
+        <Text color="dimmed" size="xs" weight={400}>
+          {data.description}
+        </Text>
+      </div>
+      <Checkbox
+        checked={selected}
+        onChange={() => {}}
+        sx={{
+          pointerEvents: 'none',
+        }}
+        tabIndex={-1}
+      />
+    </Group>
+  );
+}
 
 function RaindropConfigurationCollections() {
   const { raindropDispatch, raindropState } = useRaindrop();
   const { data, error } = useRaindropCollections();
+  const [transferListData, setTransferListData] = useState<TransferListData>([
+    [],
+    [],
+  ]);
 
-  if (error) {
-    return <div>Something failed: {error.message}</div>;
+  useEffect(() => {
+    const defaultTransferListData = buildTransferData(
+      data.children ? data.children.items : [],
+      data.root ? data.root.items : [],
+      raindropState.configuration.collections,
+    );
+    setTransferListData(defaultTransferListData);
+  }, [data.children, data.root, raindropState.configuration.collections]);
+
+  if (error.root) {
+    return (
+      <div>
+        Something failed retrieving root collections: {error.root.message}
+      </div>
+    );
+  }
+  if (error.children) {
+    return (
+      <div>
+        Something failed retrieving root children: {error.children.message}
+      </div>
+    );
   }
 
   if (!data) {
@@ -32,96 +179,38 @@ function RaindropConfigurationCollections() {
     );
   }
 
-  if (!data.result || !data.items || data.items.length === 0) {
-    return <NotFound />;
-  }
-
   return (
-    <SimpleGrid
-      breakpoints={[
-        {
-          cols: 1,
-          maxWidth: 755,
-        },
-      ]}
-      cols={2}
-    >
-      <Box
-        sx={(theme) => {
-          return {
-            backgroundImage: `linear-gradient(135deg, ${
-              theme.colors[theme.primaryColor][6]
-            } 0%, ${theme.colors[theme.primaryColor][4]} 100%)`,
-            borderRadius: theme.radius.md,
-            padding: theme.spacing.xl,
-          };
-        }}
-      >
+    <>
+      <Paper>
         <Text>
           Select from which collections we can look for raindrops top be added
           to your reading list, removed when expired, etc.
         </Text>
-      </Box>
-
-      <Box
-        sx={(theme) => {
-          return {
-            backgroundColor: theme.white,
-            borderRadius: theme.radius.md,
-            padding: theme.spacing.xl,
-          };
+      </Paper>
+      <TransferList
+        breakpoint="sm"
+        filter={(query, item) => {
+          return (
+            item.label.toLowerCase().includes(query.toLowerCase().trim()) ||
+            item.description.toLowerCase().includes(query.toLowerCase().trim())
+          );
         }}
-      >
-        <ScrollArea.Autosize
-          maxHeight={300}
-          mx="auto"
-          sx={{
-            maxWidth: 400,
-          }}
-        >
-          <SimpleGrid cols={1}>
-            {data.items.map((item) => {
-              return (
-                <Checkbox
-                  checked={
-                    raindropState.configuration.collections.indexOf(
-                      // eslint-disable-next-line no-underscore-dangle
-                      `${item._id}`,
-                    ) !== -1
-                  }
-                  icon={Link1Icon}
-                  // eslint-disable-next-line no-underscore-dangle
-                  id={`${item._id}`}
-                  label={item.title}
-                  onChange={(event) => {
-                    if (event.target.checked) {
-                      raindropState.configuration.collections.push(
-                        event.target.value,
-                      );
-                    } else {
-                      raindropState.configuration.collections =
-                        raindropState.configuration.collections.filter(
-                          (collectionId) => {
-                            return collectionId !== event.target.value;
-                          },
-                        );
-                    }
-                    raindropDispatch({
-                      payload: {
-                        ...raindropState,
-                      },
-                      type: 'authSave',
-                    });
-                  }}
-                  // eslint-disable-next-line no-underscore-dangle
-                  value={item._id}
-                />
-              );
-            })}
-          </SimpleGrid>
-        </ScrollArea.Autosize>
-      </Box>
-    </SimpleGrid>
+        itemComponent={TransferListItemComponent}
+        listHeight={300}
+        nothingFound="No one here"
+        onChange={(currentValue: TransferListData) => {
+          raindropDispatch({
+            payload: currentValue[1].map((item) => {
+              return parseInt(item.value, 10);
+            }),
+            type: 'saveConfigCollections',
+          });
+        }}
+        searchPlaceholder="Search employees..."
+        titles={['Collections to include', 'Included collections']}
+        value={transferListData}
+      />
+    </>
   );
 }
 

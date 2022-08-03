@@ -38,9 +38,11 @@ function RaindropConfiguration() {
       </Stepper>
 
       <Group mt="xl" position="center">
-        <Button onClick={prevStep} variant="default">
-          Back
-        </Button>
+        {active > 0 && (
+          <Button onClick={prevStep} variant="default">
+            Back
+          </Button>
+        )}
         <Button onClick={nextStep}>Next step</Button>
       </Group>
     </>

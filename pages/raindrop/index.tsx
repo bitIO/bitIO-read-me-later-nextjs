@@ -7,10 +7,12 @@ import { useRouter } from 'next/router';
 import ContentLoaderImageGrid from '../../components/ContentLoader/ImageGrid';
 import { useRaindrop } from '../../components/Context/Raindrop';
 import RaindropConfiguration from '../../components/RaindropConfiguration/RaindropConfiguration';
+import useRaindropUser from '../../hooks/raindrop/useRaindropUser';
 
 function Raindrop() {
-  const { raindropState } = useRaindrop();
   const router = useRouter();
+  const { raindropState, raindropDispatch } = useRaindrop();
+  const { raindropUserData } = useRaindropUser();
 
   useEffect(() => {
     async function fetchLocation() {
@@ -38,6 +40,18 @@ function Raindrop() {
 
     fetchLocation();
   }, [raindropState.session.access_token]);
+
+  useEffect(() => {
+    if (raindropUserData) {
+      raindropDispatch({
+        payload: {
+          ...raindropState,
+          user: raindropUserData,
+        },
+        type: 'authSave',
+      });
+    }
+  }, [raindropState.user, raindropUserData]);
 
   if (!raindropState.session.access_token) {
     return (

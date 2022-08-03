@@ -1,16 +1,18 @@
 // RAINDROP CONTEXT
 // -----------------------------------------------------------------------------
 export type RaindropAction =
+  | { payload: number[]; type: 'saveConfigCollections' }
   | { payload: RaindropState; type: 'authSave' }
   | { type: 'authRemove' }
   | { type: 'authRefresh' };
-export type RaindropDispatch = (action: RaindropAction) => void;
 export type RaindropConfiguration = {
-  collections: string[];
+  collections: number[];
   collectionsIncludeAll: boolean;
   initialized: boolean;
   tags: string[];
 };
+export type RaindropDispatch = (action: RaindropAction) => void;
+export type RaindropProviderProps = { children: ReactNode };
 export type RaindropSession = {
   access_token: string | undefined;
   expires: number | undefined;
@@ -20,10 +22,9 @@ export type RaindropSession = {
 };
 export type RaindropState = {
   configuration: RaindropConfiguration;
-  session: RaindropSession | undefined;
+  session: RaindropSession;
   user: RaindropUser | undefined;
 };
-export type RaindropProviderProps = { children: ReactNode };
 
 // RAINDROP COLLECTIONS
 // -----------------------------------------------------------------------------
@@ -39,7 +40,7 @@ export interface RaindropApiResponse {
 }
 
 export interface RaindropApiCollectionsResponse {
-  items: RaindropCollection[] | undefined;
+  items: RaindropCollection[];
   result: boolean;
 }
 
